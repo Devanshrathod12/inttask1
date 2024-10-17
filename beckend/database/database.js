@@ -18,7 +18,11 @@ const Schema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    password:{
+    address:{
+        type:String,
+        required:true
+    },
+     conformaddress:{
         type:String,
         required:true
     }

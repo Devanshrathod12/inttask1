@@ -12,41 +12,40 @@ app.get("/",(req,res)=>{
 })
 
 // api end points
-app.use("/api/data",product_routes)
-
+app.use("/api/allusersdata",product_routes)
 
 
 // post route the data in the database
-app.post("/post",async(req,res)=>{
-    try {
-        const userdata = new User(req.body)
-        const savedata = await userdata.save()
-        res.send(savedata)
-    } catch (error) {
-        res.send(error)
-    }
-})
+// app.post("/post",async(req,res)=>{
+//     try {
+//         const userdata = new User(req.body)
+//         const savedata = await userdata.save()
+//         res.send(savedata)
+//     } catch (error) {
+//         res.send(error)
+//     }
+// })
 
 //delete data
-app.delete("/delete/:id",async(req,res)=>{
-    try {
-        const deletedata = await User.findByIdAndDelete(req.params.id)
-        res.send(deletedata)
-    }catch (error) {
-        res.send(error)
-    }
-})
+// app.delete("/delete/:id",async(req,res)=>{
+//     try {
+//         const deletedata = await User.findByIdAndDelete(req.params.id)
+//         res.send(deletedata)
+//     }catch (error) {
+//         res.send(error)
+//     }
+// })
 
-app.get("/get",async(req,res)=>{
-     try {
-        const finddata = await User.find({})
-        console.log(finddata);
-        res.send(finddata)
+// app.get("/get",async(req,res)=>{
+//      try {
+//         const finddata = await User.find({})
+//         console.log(finddata);
+//         res.send(finddata)
         
-     } catch (error) {
-        res.send(error)
-     }
-})
+//      } catch (error) {
+//         res.send(error)
+//      }
+// })
 
 
 app.listen(3000,()=>{
