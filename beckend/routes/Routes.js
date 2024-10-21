@@ -6,4 +6,6 @@ router.route("/data").post(userdata)
 router.route("/alldata").get(alldbdata)
 router.route("/delete/:id").delete(deletedata)
 router.route("/update/:id").put(updatedata)
+
+
 module.exports = router

@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const User = require("./database/database");
+const multer = require("multer")
+const upload = multer({ dest: "uploads/"})
 const product_routes = require("./routes/Routes")
 app.use(express.json());
 app.use(cors());

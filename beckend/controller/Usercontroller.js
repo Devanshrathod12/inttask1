@@ -4,6 +4,7 @@ const User = require("../database/database")
 const userdata = async (req, res) => {
     const {name, email,phone,address,conformaddress} = req.body;
     try {
+        const Emailverify = await User.findOne({email})
         const newUser = new User({
             name: name,
             email: email,
@@ -56,5 +57,8 @@ const updatedata = async (req,res)=>{ //findByIdAndUpdate
       res.send(error)
    }
 }
+
+
+
 
 module.exports = {userdata,alldbdata,deletedata,updatedata}
