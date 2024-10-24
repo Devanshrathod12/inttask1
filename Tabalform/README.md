@@ -78,3 +78,49 @@ Currently, two official plugins are available:
 
 // export default Tabaldata
 ```
+
+
+...<div className="flex justify-center space-x-4 mt-[8rem]"> 
+        <button
+          className={`w-full max-w-md p-4 border bg-gradient-to-r from-purple-500 to-pink-500 border-gray-200 rounded-lg shadow-lg ${
+            showForm ? "opacity-100" : "opacity-50"
+          }`}
+          onClick={() => setShowForm(true)}
+        >
+          User Details
+        </button>
+        <button
+          className={`w-full max-w-md p-4 border bg-gradient-to-r from-purple-500 to-pink-500 border-gray-200 rounded-lg shadow-lg ${
+            !showForm ? "opacity-100" : "opacity-50"
+          }`}
+          onClick={() => setShowForm(false)}
+        >
+          User Data
+        </button>
+      </div>
+      <div className="mt-16">
+        {showForm ? (
+          <FormComponent
+            postdata={postdata}
+          />
+        ) : (
+          <Tabledata
+            getdata={getdata}
+            deletedata={deletedata}
+            updatedata={updatedata}
+          />
+        )}
+      </div>
+
+
+      ///////////////////////
+
+          <BrowserRouter>
+    <Routes>
+      <Route path="/"  element={<FormComponent postdata={postdata}/>}/>
+      <Route path="/data"  element={<Tabledata getdata={getdata}
+            deletedata={deletedata}
+            updatedata={updatedata}/>}/>
+    </Routes>
+    </BrowserRouter>
+    </div>

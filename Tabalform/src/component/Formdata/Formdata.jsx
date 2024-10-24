@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const FormComponent = ({ postdata }) => {
   const [name, setName] = useState('');
@@ -7,19 +9,43 @@ const FormComponent = ({ postdata }) => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [conformaddress, setConformAddress] = useState('');
-  const handleSubmit = (e) => {
+  
+  const navigate = useNavigate();
+
+  const removeExtraSpaces =(str)=>{
+   return str.trim().split(/\s+/).join(' ')
+
+  }
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postdata(name, email, phone, address, conformaddress);
+
+    if(!name || !email || !phone||!address||!conformaddress){
+      toast.error("Plz fill in all fields")
+
+    }
+    else if(name,email,phone,address,conformaddress){
+      name:removeExtraSpaces(name);
+      email:removeExtraSpaces(email);
+      phone:removeExtraSpaces(phone);
+      address:removeExtraSpaces(address);
+      conformaddress:removeExtraSpaces(conformaddress);
+      await postdata(name,email,phone, address, conformaddress);
+      toast.success("User registerd successfull")
+     navigate('/data')
+    }
+  
     // Clear the form after submission
     setName('');
     setEmail('');
     setPhone('');
     setAddress('');
     setConformAddress('');
+  
+    // Navigate to the data page (where the table is)
+ 
 
   };
   
-
   return (
     <>
     
@@ -31,7 +57,6 @@ const FormComponent = ({ postdata }) => {
         className="w-full px-3 py-2 border font-extrabold border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500"
         type="text"
         placeholder='Enter Name'
-        required
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
@@ -43,7 +68,6 @@ const FormComponent = ({ postdata }) => {
         className="w-full px-3 py-2 border border-gray-300 font-extrabold rounded-md text-sm focus:outline-none focus:border-blue-500"
         type="email"
         placeholder='Enter Email'
-        required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -54,7 +78,6 @@ const FormComponent = ({ postdata }) => {
       <input
         className="w-full px-3 py-2 border border-gray-300 font-extrabold rounded-md text-sm focus:outline-none focus:border-blue-500"
         type="text"
-        required
         placeholder='Enter Phone'
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
@@ -67,7 +90,6 @@ const FormComponent = ({ postdata }) => {
         className="w-full px-3 py-2 border font-extrabold border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500"
         type="text"
         placeholder='Enter Address'
-        required
         value={address}
         onChange={(e) => setAddress(e.target.value)}
       />
@@ -79,7 +101,6 @@ const FormComponent = ({ postdata }) => {
         className="w-full px-3 py-2 border font-extrabold border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500"
         type="text"
         placeholder='Enter confirm Address'
-        required
         value={conformaddress}
         onChange={(e) => setConformAddress(e.target.value)}
       />

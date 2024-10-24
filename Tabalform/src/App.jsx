@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FormComponent from "../src/component/Formdata/Formdata";
+import { BrowserRouter as Router, Routes, Route , Link, useNavigate} from 'react-router-dom';
 import Tabledata from "../src/component/Tabledata/Tabledata";
-
+import {ToastContainer} from "react-toastify"
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 const App = () => {
   const [getdata, setgetdata] = useState([]);
-  const [showForm, setShowForm] = useState(true);
-
   // Fetch data
   useEffect(() => {
     const fecthData = async () => {
@@ -25,97 +26,67 @@ const App = () => {
   // Post new dat
   const postdata = async (name, email, phone, address, conformaddress) => {
     try {
-      const result = await axios.post(
-        "http://localhost:3000/api/allusersdata/data",
-        { name, email, phone, address, conformaddress }
-      );
-      setgetdata([...getdata, result.data]); // Add the new data to the stat
+      const response = await axios.post("http://localhost:3000/api/allusersdata/data", {
+        name,
+        email,
+        phone,
+        address,
+        conformaddress,
+      });
+      // new users data
+      setgetdata((prevData) => [...prevData, response.data]);
+  
+      // responce 
+      return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("Error posting data:", error);
+      toast.error("Failed to add user. Please try again."); // Display error message
     }
   };
+  
 
   // Delete function
   const deletedata = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/api/allusersdata/delete/${id}`);
-      setgetdata(getdata.filter((user) => user._id !== id));
+      // Update state to remove the deleted user
+      setgetdata((prevData) => prevData.filter((user) => user._id !== id));
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   // Update function
-  const updatedata = async (id) => {
-    const newname = prompt("Enter Name");
-    const newemail = prompt("Enter Email");
-    const newphone = prompt("Enter Phone");
-    const newaddress = prompt("Enter Address");
-    const newconformaddress = prompt("Enter Confirm Address");
-
+  const updatedata = async (id, updatedUser) => {
     try {
-      await axios.put(`http://localhost:3000/api/allusersdata/update/${id}`, {
-        name: newname,
-        email: newemail,
-        phone: newphone,
-        address: newaddress,
-        conformaddress: newconformaddress,
-      });
-
-      // Update
-      setgetdata(
-        getdata.map((user) => {
-          return user._id === id
-            ? {
-                _id: id,
-                name: newname,
-                email: newemail,
-                phone: newphone,
-                address: newaddress,
-                conformaddress: newconformaddress,
-              }
-            : user;
-        })
-      );
+      const response = await axios.put(`http://localhost:3000/api/allusersdata/update/${id}`, updatedUser);
+      // Handle response if needed, e.g., updating local state
     } catch (error) {
-      console.error(error);
+      console.error("Error updating user:", error);
     }
   };
+  
+  
 
   return (
+    <>
     <div>
-      <div className="flex justify-center space-x-4 mt-[8rem]">
-        <button
-          className={`w-full max-w-md p-4 border bg-gradient-to-r from-purple-500 to-pink-500 border-gray-200 rounded-lg shadow-lg ${
-            showForm ? "opacity-100" : "opacity-50"
-          }`}
-          onClick={() => setShowForm(true)}
-        >
-          User Details
-        </button>
-        <button
-          className={`w-full max-w-md p-4 border bg-gradient-to-r from-purple-500 to-pink-500 border-gray-200 rounded-lg shadow-lg ${
-            !showForm ? "opacity-100" : "opacity-50"
-          }`}
-          onClick={() => setShowForm(false)}
-        >
-          User Data
-        </button>
-      </div>
-      <div className="mt-16">
-        {showForm ? (
-          <FormComponent
-            postdata={postdata}
-          />
-        ) : (
-          <Tabledata
-            getdata={getdata}
-            deletedata={deletedata}
-            updatedata={updatedata}
-          />
-        )}
-      </div>
+       <Router>
+            <Routes>
+                <Route path="/" element={<FormComponent postdata={postdata} />} />
+                <Route path="/data" element={
+                    <Tabledata 
+                        getdata={getdata}
+                        deletedata={deletedata}
+                        updatedata={updatedata}
+                    />
+                } />
+            </Routes>
+        </Router>
+        <ToastContainer/>
     </div>
+    </>
   );
 };
 
