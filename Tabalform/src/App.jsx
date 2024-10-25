@@ -34,20 +34,17 @@ const App = () => {
             conformaddress,
         });
 
-        // New users data
+        // New users 
         setgetdata((prevData) => [...prevData, response.data]);
 
-        // Return the response for further processing if needed
         return response.data;
 
     } catch (error) {
         console.error("Error posting data:", error);
-
-        // Check if the error response has a message about the email already existing
         if (error.response && error.response.status === 400) {
-            toast.error(error.response.data.message); // Show the specific error message
+            toast.error(error.response.data.message); 
         } else {
-            toast.error("Failed to add user. Please try again."); // General error message
+            toast.error("Failed to add user. Please try again.");
         }
     }
 };

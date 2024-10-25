@@ -29,6 +29,10 @@ const FormComponent = ({ postdata }) => {
       toast.error("Address and confirm address do not match.");
       return;
   }
+  if (phone.length <= 9) {
+    toast.error("Phone number is not valid.");
+    return;
+}
 
 
     // Remove extra spaces

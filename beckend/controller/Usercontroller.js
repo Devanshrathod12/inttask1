@@ -13,14 +13,18 @@ const userdata = async (req, res) => {
                 message: 'User with this email already exists.'
             });
         }
-
         if (address !== conformaddress) {
             return res.status(400).json({
                 success: false,
-                message: 'Address and confirm address do not match.'
+                message: 'Address and confirm address not match.'
             });
         }
-
+        if (phone.length <= 9) {
+            return res.status(400).json({
+                success: false,
+                message: 'Phone number must be longer than 10 characters.'
+            });
+        }
         // Create a new user if no existing user is found
         const newUser = new User({
             name,
