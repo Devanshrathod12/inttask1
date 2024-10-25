@@ -19,37 +19,49 @@ const FormComponent = ({ postdata }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!name || !email || !phone||!address||!conformaddress){
-      toast.error("Plz fill in all fields")
-
+    // Check for empty fields
+    if (!name || !email || !phone || !address || !conformaddress) {
+        toast.error("Please fill in all fields");
+        return;
     }
-    else if(name,email,phone,address,conformaddress){
-      name:removeExtraSpaces(name);
-      email:removeExtraSpaces(email);
-      phone:removeExtraSpaces(phone);
-      address:removeExtraSpaces(address);
-      conformaddress:removeExtraSpaces(conformaddress);
-      await postdata(name,email,phone, address, conformaddress);
-      toast.success("User registerd successfull")
-     navigate('/data')
-    }
-  
-    // Clear the form after submission
-    setName('');
-    setEmail('');
-    setPhone('');
-    setAddress('');
-    setConformAddress('');
-  
-    // Navigate to the data page (where the table is)
- 
 
-  };
-  
+    if (address !== conformaddress) {
+      toast.error("Address and confirm address do not match.");
+      return;
+  }
+
+
+    // Remove extra spaces
+    const cleanedName = removeExtraSpaces(name);
+    const cleanedEmail = removeExtraSpaces(email);
+    const cleanedPhone = removeExtraSpaces(phone);
+    const cleanedAddress = removeExtraSpaces(address);
+    const cleanedConformAddress = removeExtraSpaces(conformaddress);
+
+    try {
+        const result = await postdata(cleanedName, cleanedEmail, cleanedPhone, cleanedAddress, cleanedConformAddress);
+        if (result) {
+            toast.success("User registered successfully");
+            navigate('/data');
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            toast.error("User with this email already exists.");
+        } else {
+            toast.error("Failed to add user. Please try again.");
+        }
+    } finally {
+        setName('');
+        setEmail('');
+        setPhone('');
+        setAddress('');
+        setConformAddress('');
+    }
+};
   return (
-    <>
-    
-    <h2 className="text-center text-2xl font-bold mb-4 text-purple-600">User Details</h2>
+    <> 
+    <div className=''>
+    <h2 className="text-center text-2xl mt-8  font-bold mb-4 text-purplez-600">User Details</h2>
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto mt-6 p-4 border bg-gradient-to-r from-purple-500 to-pink-500 border-gray-200 rounded-lg shadow-lg">
     <div className="mb-3">
       <label className="block text-gray-700 text-sm font-semibold mb-1">Name</label>
@@ -61,7 +73,6 @@ const FormComponent = ({ postdata }) => {
         onChange={(e) => setName(e.target.value)}
       />
     </div>
-    
     <div className="mb-3">
       <label className="block text-gray-700 text-sm font-semibold mb-1">Email</label>
       <input
@@ -72,7 +83,6 @@ const FormComponent = ({ postdata }) => {
         onChange={(e) => setEmail(e.target.value)}
       />
     </div>
-  
     <div className="mb-3">
       <label className="block text-gray-700 text-sm font-semibold mb-1">Phone</label>
       <input
@@ -83,7 +93,6 @@ const FormComponent = ({ postdata }) => {
         onChange={(e) => setPhone(e.target.value)}
       />
     </div>
-  
     <div className="mb-3">
       <label className="block text-gray-700 text-sm font-semibold mb-1">Address</label>
       <input
@@ -94,7 +103,6 @@ const FormComponent = ({ postdata }) => {
         onChange={(e) => setAddress(e.target.value)}
       />
     </div>
-  
     <div className="mb-3">
       <label className="block text-gray-700 text-sm font-semibold mb-1">Confirm Address</label>
       <input
@@ -105,12 +113,12 @@ const FormComponent = ({ postdata }) => {
         onChange={(e) => setConformAddress(e.target.value)}
       />
     </div>
-
-  
     <button className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-md shadow-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500" type="submit">
       Submit
     </button>
   </form>
+    </div>
+    
   </>
   );
 };

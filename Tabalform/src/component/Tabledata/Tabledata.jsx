@@ -3,6 +3,7 @@ import img from "../../assets/manager5.jpg";
 import FormDialog from "../UserForm/FormDialog";
 import axios from "axios";
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 //rupesh patil
 const Tabledata = ({ getdata, deletedata }) => {
@@ -13,6 +14,8 @@ const Tabledata = ({ getdata, deletedata }) => {
     const user = users.find((user) => user._id === userId);
     setSelectedUser(user);
   };
+
+  const navigate = useNavigate();
 
   const handleDelete = async (id) => {
     await deletedata(id);
@@ -31,7 +34,7 @@ const Tabledata = ({ getdata, deletedata }) => {
       setUsers(
         users.map((user) =>
           user._id === id ? { ...user, ...updatedUser } : user,
-        toast.success("User Dtailed Update successfully")
+        toast.success("User Detailed Updated successfully")
         )
       );
     } catch (error) {
@@ -46,8 +49,8 @@ const Tabledata = ({ getdata, deletedata }) => {
 
   return (
     <>
-      <div className="overflow-x-auto w-full sm:w-4/5 lg:w-3/4 mx-auto mt-8">
-        <h2 className="text-center text-2xl font-bold mb-4 text-purple-600">
+      <div className="overflow-x-auto mt-5 w-full sm:w-4/5 lg:w-3/4 mx-auto">
+        <h2 className="text-center text-2xl font-bold mb-4 text-white-600">
           User Data Table
         </h2>
         <table className="bg-white w-full border border-collapse shadow-lg rounded-lg">

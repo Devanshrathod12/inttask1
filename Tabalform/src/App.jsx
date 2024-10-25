@@ -26,24 +26,32 @@ const App = () => {
   // Post new dat
   const postdata = async (name, email, phone, address, conformaddress) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/allusersdata/data", {
-        name,
-        email,
-        phone,
-        address,
-        conformaddress,
-      });
-      // new users data
-      setgetdata((prevData) => [...prevData, response.data]);
-  
-      // responce 
-      return response.data;
+        const response = await axios.post("http://localhost:3000/api/allusersdata/data", {
+            name,
+            email,
+            phone,
+            address,
+            conformaddress,
+        });
+
+        // New users data
+        setgetdata((prevData) => [...prevData, response.data]);
+
+        // Return the response for further processing if needed
+        return response.data;
+
     } catch (error) {
-      console.error("Error posting data:", error);
-      toast.error("Failed to add user. Please try again."); // Display error message
+        console.error("Error posting data:", error);
+
+        // Check if the error response has a message about the email already existing
+        if (error.response && error.response.status === 400) {
+            toast.error(error.response.data.message); // Show the specific error message
+        } else {
+            toast.error("Failed to add user. Please try again."); // General error message
+        }
     }
-  };
-  
+};
+
 
   // Delete function
   const deletedata = async (id) => {
@@ -71,8 +79,20 @@ const App = () => {
 
   return (
     <>
-    <div>
+    <div className="relative w-full p-[8rem] h-screen bg-cover bg-center bg-[url('./assets/wwwwww.jpg')]">
        <Router>
+       <Link 
+            to="/" 
+            className="px-20 py-2 ml-[38rem] mr-[4rem] bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
+        >
+            Form
+        </Link>
+        <Link 
+            to="/data" 
+            className="px-16 py-2  bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
+        >
+            Table Data
+        </Link>
             <Routes>
                 <Route path="/" element={<FormComponent postdata={postdata} />} />
                 <Route path="/data" element={
