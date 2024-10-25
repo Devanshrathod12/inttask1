@@ -76,33 +76,38 @@ const App = () => {
 
   return (
     <>
-    <div className="relative w-full p-[8rem] h-screen bg-cover bg-center bg-[url('./assets/wwwwww.jpg')]">
-       <Router>
-       <Link 
-            to="/" 
-            className="px-20 py-2 ml-[38rem] mr-[4rem] bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
-        >
-            Form
-        </Link>
-        <Link 
-            to="/data" 
-            className="px-16 py-2  bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
-        >
-            Table Data
-        </Link>
-            <Routes>
-                <Route path="/" element={<FormComponent postdata={postdata} />} />
-                <Route path="/data" element={
-                    <Tabledata 
-                        getdata={getdata}
-                        deletedata={deletedata}
-                        updatedata={updatedata}
-                    />
-                } />
-            </Routes>
-        </Router>
-        <ToastContainer/>
+    <div className="relative w-full h-screen bg-cover bg-center bg-[url('./assets/wwwwww.jpg')] p-8 md:p-16 lg:p-32">
+  <Router>
+    <div className="flex flex-col md:flex-row justify-center items-center space-x-4">
+      <Link 
+        to="/" 
+        className="px-8 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
+      >
+       User Form
+      </Link>
+      <Link 
+        to="/data" 
+        className="px-8 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition duration-300"
+      >
+        User Details
+      </Link>
     </div>
+    
+    <Routes>
+      <Route path="/" element={<FormComponent postdata={postdata} />} />
+      <Route path="/data" element={
+        <Tabledata 
+          getdata={getdata}
+          deletedata={deletedata}
+          updatedata={updatedata}
+        />
+      } />
+    </Routes>
+  </Router>
+  
+  <ToastContainer />
+</div>
+
     </>
   );
 };
