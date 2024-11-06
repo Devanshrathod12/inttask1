@@ -19,5 +19,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.UserModel = require('./UserModel')(sequelize, DataTypes); // Pass DataTypes correctly
-
+db.sequelize.sync()
+.then(()=>{
+    console.log("YES RE-SYNC");
+    
+})
 module.exports = db;
