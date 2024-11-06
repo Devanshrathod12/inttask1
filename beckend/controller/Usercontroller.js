@@ -1,8 +1,15 @@
 const User = require("../database/database")
+const bcrypt = require('bcrypt');
+// auth 
+// password 
+// role geust admin users 
+// admin access all permitions to assces form   
+
+
 
 // insert data in database
 const userdata = async (req, res) => {
-    const { name, email, phone, address, conformaddress } = req.body;
+    const { name, email, phone,password, address, conformaddress } = req.body;
 
     try {
         // Check if a user with the provided email already exists
@@ -25,15 +32,21 @@ const userdata = async (req, res) => {
                 message: 'Phone number must be longer than 10 characters.'
             });
         }
+
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+
         // Create a new user if no existing user is found
         const newUser = new User({
             name,
             email,
             phone,
+            password : hashedPassword,
             address,
             conformaddress
         });
-
+ 
         const users = await newUser.save();
         res.status(201).json(users); // Respond with the created user
     } catch (error) {
@@ -70,6 +83,7 @@ const deletedata = async (req,res)=>{
 }
 
 // update data on revious data
+//sopnil 
 
 const updatedata = async (req,res)=>{ //findByIdAndUpdate
    try {
