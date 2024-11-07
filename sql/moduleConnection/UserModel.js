@@ -1,20 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
-    const UserModel = sequelize.define('User', {  // 'User' should be a string
-      name: {
-        type: DataTypes.STRING,
-        
-      },
-      email: {
-        type: DataTypes.STRING,
-        defaultValue:'google@gmail.com'
-       
-      },
-      gender: {
-        type: DataTypes.STRING,
-    
-      },
-    });
-  
-    return UserModel;
-  };
-  
+  const UserModel = sequelize.define('User', {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      defaultValue: 'google@gmail.com',
+      allowNull: false,
+      unique: true
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
+  }, {
+    createdAt: 'create_at',
+    updatedAt: 'modified_at'
+  });
+
+  return UserModel;
+};
